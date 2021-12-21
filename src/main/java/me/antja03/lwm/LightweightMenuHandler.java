@@ -1,6 +1,6 @@
 package me.antja03.lwm;
 
-import me.antja03.lwm.component.ClickComponent;
+import me.antja03.lwm.component.ButtonComponent;
 import me.antja03.lwm.component.ItemComponent;
 import me.antja03.lwm.component.MenuComponent;
 import me.antja03.lwm.component.SlotComponent;
@@ -80,8 +80,8 @@ public class LightweightMenuHandler implements Listener {
             if (component.getMenuSlot() != event.getSlot())
                 continue;
 
-            if (component instanceof ClickComponent) {
-                ((ClickComponent) component).runOnClick(player, menu);
+            if (component instanceof ButtonComponent) {
+                ((ButtonComponent) component).runOnClick(player, menu);
                 continue;
             }
 
@@ -106,7 +106,7 @@ public class LightweightMenuHandler implements Listener {
                 if (stackInSlot == null && event.getCursor().getType() != Material.AIR) {
                     event.setCancelled(true);
 
-                    if (slotComponent.onSlotFill(player, event.getClickedInventory(), event.getCursor())) {
+                    if (slotComponent.onSlotFill(player, event.getClickedInventory().getItem(event.getSlot()), event.getCursor())) {
                         event.getClickedInventory().setItem(event.getSlot(), event.getCursor());
                         player.setItemOnCursor(null);
                     } else {
@@ -120,7 +120,7 @@ public class LightweightMenuHandler implements Listener {
                 if (stackInSlot != null && event.getCursor().getType() == Material.AIR) {
                     event.setCancelled(true);
 
-                    if (slotComponent.onSlotEmpty(player, event.getClickedInventory(), event.getCurrentItem())) {
+                    if (slotComponent.onSlotEmpty(player, event.getClickedInventory().getItem(event.getSlot()))) {
                         player.setItemOnCursor(stackInSlot);
                         event.getClickedInventory().setItem(event.getSlot(), null);
                     } else {
@@ -132,13 +132,13 @@ public class LightweightMenuHandler implements Listener {
                 }
 
                 if (stackInSlot != null && event.getCursor().getType() != Material.AIR) {
-                    if (!slotComponent.onSlotEmpty(player, event.getClickedInventory(), null)) {
+                    if (!slotComponent.onSlotEmpty(player, event.getClickedInventory().getItem(event.getSlot()))) {
                         event.setCancelled(true);
                     } else {
                         event.getClickedInventory().setItem(event.getSlot(), null);
                     }
 
-                    if (!slotComponent.onSlotFill(player, event.getClickedInventory(), event.getCursor())) {
+                    if (!slotComponent.onSlotFill(player, event.getClickedInventory().getItem(event.getSlot()), event.getCursor())) {
                         event.setCancelled(true);
                     } else {
                         event.getClickedInventory().setItem(event.getSlot(), event.getCursor());

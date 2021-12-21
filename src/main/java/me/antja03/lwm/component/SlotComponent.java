@@ -8,7 +8,7 @@ import org.bukkit.inventory.ItemStack;
 public class SlotComponent extends MenuComponent {
 
     public interface SlotListener {
-        boolean run(Player player, Inventory inventory, ItemStack newStack);
+        boolean run(Player player, ItemStack oldStack, ItemStack newStack);
     }
 
     private SlotListener onSlotFill;
@@ -20,18 +20,18 @@ public class SlotComponent extends MenuComponent {
         this.onSlotEmpty = onSlotEmpty;
     }
 
-    public boolean onSlotFill(Player player, Inventory inventory, ItemStack newStack) {
+    public boolean onSlotFill(Player player, ItemStack oldStack, ItemStack newStack) {
         try {
-            return onSlotFill.run(player, inventory, newStack);
+            return onSlotFill.run(player, oldStack, newStack);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
     }
 
-    public boolean onSlotEmpty(Player player, Inventory inventory, ItemStack newStack) {
+    public boolean onSlotEmpty(Player player, ItemStack oldStack) {
         try {
-            return onSlotEmpty.run(player, inventory, newStack);
+            return onSlotEmpty.run(player, oldStack, null);
         } catch (Exception e) {
             e.printStackTrace();
             return false;
